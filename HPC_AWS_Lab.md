@@ -65,8 +65,10 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 ![](ConnectCluster_DCVpt3.png)
 
 ### Step 6: Submit HPC job using control code for smallest prime factor
-1. Create the MPI application for smallest prime factor control where its run as a normal program not utilizing HPC.
-Run the commands below:
+1. To demonstrate ParallelCluster's HPC capabilities, we will first write a program to calculate the smallest prime factor of a large integer.
+It will run the function `calcMinPrimeFactor` on the same input 4 times within a single ParellelCluster process.
+
+Within the ***DCV terminal***, copy-paste and run the following to save the program to the file `mpi_control_least_prime_factor.c`
 ```
 cat > mpi_control_least_prime_factor.c << EOF
 #include <stdio.h>
@@ -140,22 +142,31 @@ unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
     return n;
 }
 EOF
+```
 
+2. Then, run the following to load the required modules and compile the application
+```
 module load intelmpi
 mpicc mpi_control_least_prime_factor.c -o mpi_control_least_prime_factor
-
 ```
-Test application locally on head node 
+
+3. Execute the application on the head node using a single process (specified by `-n 1`)
 ```
 mpirun -n 1 ./mpi_control_least_prime_factor
+```
 
+This should print out the computed least prime factor, and give you a runtime of the process as follows:
 ```
-This should give you a runtime of the process without using parallel computing with four seperate numbers running through the function one by one. The runtime shown gives an idea of the maximum time it took to complete all four processes without using HPC.
+<CODE OUTPUT GOES HERE>
+```
+
 ### Step 7: Submit HPC job on finding minimum prime factor
-1. Create the MPI application for smallest prime factor
-Run the commands below in the **Terminal**:
+1. Now, we'll do the same using MPI code designed to run in parallel across multiple concurrent processes.
+It will run the function `calcMinPrimeFactor` on the 4 inputs scattered across 4 concurrent parallel processes.
+
+Within the ***DCV terminal***, copy-paste and run the following to save the program to the file `mpi_parallel_least_prime_factor.c`
 ```
-cat > mpi_least_prime_factor.c << EOF
+cat > mpi_parallel_least_prime_factor.c << EOF
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -221,19 +232,28 @@ unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
   return n;
 }
 EOF
+```
 
+2. Then, run the following to load the required modules and compile the application
+```
 module load intelmpi
-mpicc mpi_least_prime_factor.c -o mpi_least_prime_factor
+mpicc mpi_parallel_least_prime_factor.c -o mpi_parallel_least_prime_factor
+```
+
+3. Execute the application on the head node using 4 processes (specified by `-n 4`)
+```
+mpirun -n 1 ./mpi_parallel_least_prime_factor
+```
+
+This should print out the computed least prime factor, and give you a runtime of each of the processes as follows:
 
 ```
-Test application locally on head node 
+<CODE OUTPUT GOES HERE>
 ```
-mpirun -n 4 ./mpi_least_prime_factor
 
-```
-This should give you a runtime of the process split up, with each of the functions computing the prime factors happening at the same time. The max runtime shown gives an idea of the maximum time it took to complete all four processes using HPC.
 ### Step 8: Compare your two runtimes!
 * The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it.
+
 ### Step 9: Clean up!
 * Make sure to go back to the AWs Parallel Cluster page and hit the delete button and delete your node!
 * The cluster and all its resources will be deleted by CloudFormation. You can check the status in the Stack Events tab.
