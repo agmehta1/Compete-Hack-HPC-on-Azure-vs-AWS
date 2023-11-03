@@ -26,7 +26,7 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 
 ### Step 3: Create your Cluster - 10-15 minutes to deploy
 * Save this template: https://www.hpcworkshops.com/template/cluster-config-hpc6a.yml
-* Navigate to AWS portal and type in AWS Parallel Clusters 
+* Navigate to AWS portal and type in AWS Parallel Cluster 
 * Click **Create Cluster** Button and **with a template** and then select the template above
 ![](CreateCluster_ClickTemplate.png)
 * Cluster properties page
