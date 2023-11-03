@@ -63,91 +63,9 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 ![](ConnectCluster_DCVpt2.png)
 * Next to Launch a terminal we'll click **activities** and then **Terminal**
 ![](ConnectCluster_DCVpt3.png)
-### Step 6: Submit HPC job on finding minimum prime factor
-1. Create the MPI application for smallest prime factor
-Run the commands below in the **Terminal**:
-```
-cat > mpi_least_prime_factor.c << EOF
-#include <stdio.h>
-#include <stdlib.h>
-#include <mpi.h>
-#include <unistd.h>
-#include <time.h>
 
-// Function declarations
-unsigned long long int calcMinPrimeFactor(unsigned long long int n);
-
-int main(int argc, char* argv[]) {
-    // MPI initialization
-   
-    int process_rank, size_of_comm;
-    unsigned long long int taskInputs[4] = {18848997157, 18848997157, 18848997157, 18848997157};
-    unsigned long long int subtaskInput;
-
-    MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &size_of_comm);
-    MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
-
-    MPI_Scatter(&taskInputs, 1, MPI_UNSIGNED_LONG_LONG, &subtaskInput, 1, MPI_UNSIGNED_LONG_LONG, 0, MPI_COMM_WORLD);
-
-    // Call your functions within the MPI program
-    clock_t t;
-    t = clock(); // start timer
-    unsigned long long int minPrimeFactor = calcMinPrimeFactor(subtaskInput);
-    t = clock() - t;
-    double  time_taken =1000000 * ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
-    printf("Process %d: Time taken: %.2f micro-seconds\n", process_rank, time_taken);// calculate the elapsed time
-    printf("Process %d: Minimum prime factor of %d is %d\n", process_rank, subtaskInput, minPrimeFactor);
-
-    // MPI finalization
-    MPI_Finalize();
-
-    return 0;
-}
-
-unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
-  // Function implementation
-  // You can use MPI features in your function if needed
-  unsigned long long int i;
-
-  // Iterate from 2 to n/2
-  for (i = 2; i <= n/2; i++) {
-      // Check if i is a factor of n
-      if (n % i == 0) {
-          // Check if i is prime
-          unsigned long long int j, is_prime = 1;
-          for (j = 2; j <= i/2; j++) {
-              if (i % j == 0) {
-                  is_prime = 0;
-                  break;
-              }
-          }
-          if (is_prime) {
-              // Found min prime factor
-              return i;
-          }
-      }
-  }
-
-  // If no prime factor was found, n is prime
-  return n;
-}
-EOF
-
-module load intelmpi
-mpicc mpi_least_prime_factor.c -o mpi_least_prime_factor
-
-```
-Test application locally on head node 
-```
-mpirun -n 4 ./mpi_least_prime_factor
-
-```
-This should give you a runtime of the process split up, with each of the functions computing the prime factors happening at the same time. The max runtime shown gives an idea of the maximum time it took to complete all four processes.
-
-
-### Step 7: Submit HPC job using control code for smallest prime factor
-1. Create the MPI application for smallest prime factor control
+### Step 6: Submit HPC job using control code for smallest prime factor
+1. Create the MPI application for smallest prime factor control where its run as a normal program not utilizing HPC.
 Run the commands below:
 ```
 cat > mpi_control_least_prime_factor.c << EOF
@@ -232,8 +150,88 @@ Test application locally on head node
 mpirun -n 1 ./mpi_control_least_prime_factor
 
 ```
-This should give you a runtime of the process without using parallel computing with four seperate numbers running through the function one by one. The runtime shown gives an idea of the maximum time it took to complete all four processes.
+This should give you a runtime of the process without using parallel computing with four seperate numbers running through the function one by one. The runtime shown gives an idea of the maximum time it took to complete all four processes without using HPC.
+### Step 7: Submit HPC job on finding minimum prime factor
+1. Create the MPI application for smallest prime factor
+Run the commands below in the **Terminal**:
+```
+cat > mpi_least_prime_factor.c << EOF
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+#include <unistd.h>
+#include <time.h>
 
+// Function declarations
+unsigned long long int calcMinPrimeFactor(unsigned long long int n);
+
+int main(int argc, char* argv[]) {
+    // MPI initialization
+   
+    int process_rank, size_of_comm;
+    unsigned long long int taskInputs[4] = {18848997157, 18848997157, 18848997157, 18848997157};
+    unsigned long long int subtaskInput;
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &size_of_comm);
+    MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
+
+    MPI_Scatter(&taskInputs, 1, MPI_UNSIGNED_LONG_LONG, &subtaskInput, 1, MPI_UNSIGNED_LONG_LONG, 0, MPI_COMM_WORLD);
+
+    // Call your functions within the MPI program
+    clock_t t;
+    t = clock(); // start timer
+    unsigned long long int minPrimeFactor = calcMinPrimeFactor(subtaskInput);
+    t = clock() - t;
+    double  time_taken =1000000 * ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
+    printf("Process %d: Time taken: %.2f micro-seconds\n", process_rank, time_taken);// calculate the elapsed time
+    printf("Process %d: Minimum prime factor of %d is %d\n", process_rank, subtaskInput, minPrimeFactor);
+
+    // MPI finalization
+    MPI_Finalize();
+
+    return 0;
+}
+
+unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
+  // Function implementation
+  // You can use MPI features in your function if needed
+  unsigned long long int i;
+
+  // Iterate from 2 to n/2
+  for (i = 2; i <= n/2; i++) {
+      // Check if i is a factor of n
+      if (n % i == 0) {
+          // Check if i is prime
+          unsigned long long int j, is_prime = 1;
+          for (j = 2; j <= i/2; j++) {
+              if (i % j == 0) {
+                  is_prime = 0;
+                  break;
+              }
+          }
+          if (is_prime) {
+              // Found min prime factor
+              return i;
+          }
+      }
+  }
+
+  // If no prime factor was found, n is prime
+  return n;
+}
+EOF
+
+module load intelmpi
+mpicc mpi_least_prime_factor.c -o mpi_least_prime_factor
+
+```
+Test application locally on head node 
+```
+mpirun -n 4 ./mpi_least_prime_factor
+
+```
+This should give you a runtime of the process split up, with each of the functions computing the prime factors happening at the same time. The max runtime shown gives an idea of the maximum time it took to complete all four processes using HPC.
 ### Step 8: Compare your two runtimes!
 * The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it.
 ### Step 9: Clean up!
