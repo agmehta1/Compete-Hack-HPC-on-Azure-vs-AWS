@@ -67,7 +67,7 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 1. Create the MPI application for smallest prime factor
 Run the commands below in the **Terminal**:
 ```
-cat > mpi_least_prime_factor.c << EOF
+cat > mpi_min_prime_factor.c << EOF
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -150,6 +150,7 @@ This should give you a runtime of the process split up, with each of the functio
 1. Create the MPI application for smallest prime factor control
 Run the commands below:
 ```
+cat > mpi_control_min_prime_factor.c << EOF
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -161,29 +162,33 @@ unsigned long long int calcMinPrimeFactor(unsigned long long int n);
 
 int main(int argc, char* argv[]) {
     // MPI initialization
-    int  process_rank,size_of_comm;
+    int process_rank,size_of_comm;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size_of_comm);
     MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
 
-
-    // Call your functions within the MPI program
-    clock_t t;
-    t = clock(); // start timer
-    unsigned long long int num= 18848997157;
+    unsigned long long int taskInputs = { 18848997157, 18848997157, 18848997157, 18848997157 };
     unsigned long long int minPrimeFactor = calcMinPrimeFactor(num);
-     printf(" Minimum prime factor of %d is %d\n", num, minPrimeFactor);
-    minPrimeFactor = calcMinPrimeFactor(num);
-     printf(" Minimum prime factor of %d is %d\n", num, minPrimeFactor);
-     minPrimeFactor = calcMinPrimeFactor(num);
-     printf(" Minimum prime factor of %d is %d\n", num, minPrimeFactor);
-    minPrimeFactor = calcMinPrimeFactor(num);
-     printf(" Minimum prime factor of %d is %d\n", num, minPrimeFactor);
+    unsigned long long int taskOutputs[4];
+    int i;
+
+    // Benchamrk runtime
+    clock_t t;
+    t = clock();
+
+    for (i = 1; i <= 4; i++) {
+        taskOutputs[i] = calcMinPrimeFactor(taskInputs[i])
+    }
 
     t = clock() - t;
-    double time_taken =1000000* ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
-    printf(" Time taken: %.2f micro-seconds\n", time_taken);// calculate the elapsed time
+    double time_taken = 1000000 * ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
+
+    // Print output and runtime
+    for (i = 1; i <= 4; i++) {
+        printf("Minimum prime factor of %d is %d\n", taskInputs[i], taskOutputs[i]);
+    }
+    printf("Time taken: %.2f micro-seconds\n", time_taken);// calculate the elapsed time
 
     // MPI finalization
     MPI_Finalize();
@@ -192,32 +197,31 @@ int main(int argc, char* argv[]) {
 }
 
 unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
-  // Function implementation
-  unsigned long long int i;
+    // Function implementation
+    unsigned long long int i;
 
-  // Iterate from 2 to n/2
-  for (i = 2; i <= n/2; i++) {
-      // Check if i is a factor of n
-      if (n % i == 0) {
-          // Check if i is prime
-          unsigned long long int j, is_prime = 1;
-          for (j = 2; j <= i/2; j++) {
-              if (i % j == 0) {
-                  is_prime = 0;
-                  break;
-              }
-          }
-          if (is_prime) {
-              // Found min prime factor
-              return i;
-          }
-      }
-  }
+    // Iterate from 2 to n/2
+    for (i = 2; i <= n/2; i++) {
+        // Check if i is a factor of n
+        if (n % i == 0) {
+            // Check if i is prime
+            unsigned long long int j, is_prime = 1;
+            for (j = 2; j <= i/2; j++) {
+                if (i % j == 0) {
+                    is_prime = 0;
+                    break;
+                }
+            }
+            if (is_prime) {
+                // Found min prime factor
+                return i;
+            }
+        }
+    }
 
-  // If no prime factor was found, n is prime
-  return n;
+    // If no prime factor was found, n is prime
+    return n;
 }
-
 EOF
 
 module load intelmpi
