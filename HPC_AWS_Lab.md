@@ -168,8 +168,7 @@ int main(int argc, char* argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &size_of_comm);
     MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
 
-    unsigned long long int taskInputs = { 18848997157, 18848997157, 18848997157, 18848997157 };
-    unsigned long long int minPrimeFactor = calcMinPrimeFactor(num);
+    unsigned long long int taskInputs[] = { 18848997157, 18848997157, 18848997157, 18848997157 };
     unsigned long long int taskOutputs[4];
     int i;
 
@@ -177,15 +176,15 @@ int main(int argc, char* argv[]) {
     clock_t t;
     t = clock();
 
-    for (i = 1; i <= 4; i++) {
-        taskOutputs[i] = calcMinPrimeFactor(taskInputs[i])
+    for (i = 0; i < 4; i++) {
+        taskOutputs[i] = calcMinPrimeFactor(taskInputs[i]);
     }
 
     t = clock() - t;
     double time_taken = 1000000 * ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
 
     // Print output and runtime
-    for (i = 1; i <= 4; i++) {
+    for (i = 0; i < 4; i++) {
         printf("Minimum prime factor of %d is %d\n", taskInputs[i], taskOutputs[i]);
     }
     printf("Time taken: %.2f micro-seconds\n", time_taken);// calculate the elapsed time
