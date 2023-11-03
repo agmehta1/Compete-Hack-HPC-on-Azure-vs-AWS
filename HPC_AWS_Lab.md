@@ -55,7 +55,7 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 ![](CreateCluster_Create.png)
 * Wait about 10-15 minutes for the cluster to go into **CREATE COMPLETE** and the compute fleet status to be running!
 
-### Step 4: Connect to the cluster using DCV
+### Step 5: Connect to the cluster using DCV
 * Once the cluster goes into **CREATE COMPLETE** we can connect to the head node
 * Click on **DCV**
 ![](ConnectCluster_DCVpt1.png)
@@ -63,7 +63,7 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 ![](ConnectCluster_DCVpt2.png)
 * Next to Launch a terminal we'll click **activities** and then **Terminal**
 ![](ConnectCluster_DCVpt3.png)
-### Step 5: Submit HPC job on finding minimum prime factor
+### Step 6: Submit HPC job on finding minimum prime factor
 1. Create the MPI application for smallest prime factor
 Run the commands below in the **Terminal**:
 ```
@@ -146,7 +146,7 @@ mpirun -n 4 ./mpi_least_prime_factor
 This should give you a runtime of the process split up, with each of the functions computing the prime factors happening at the same time. The max runtime shown gives an idea of the maximum time it took to complete all four processes.
 
 
-### Step 6: Submit HPC job using control code for smallest prime factor
+### Step 7: Submit HPC job using control code for smallest prime factor
 1. Create the MPI application for smallest prime factor control
 Run the commands below:
 ```
@@ -235,9 +235,9 @@ mpirun -n 4 ./mpi_control_least_prime_factor
 ```
 This should give you a runtime of the process without using parallel computing with four seperate numbers running through the function one by one. The runtime shown gives an idea of the maximum time it took to complete all four processes.
 
-### Step 7: Compare your two runtimes!
+### Step 8: Compare your two runtimes!
 * The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it.
-### Step 5: Clean up!
+### Step 9: Clean up!
 * Make sure to go back to the AWs Parallel Cluster page and hit the delete button and delete your node!
 * The cluster and all its resources will be deleted by CloudFormation. You can check the status in the Stack Events tab.
 ![](TerminateCluster.png)
