@@ -44,13 +44,14 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
   * Click **Next**
 ![](createCluster_HeadNode.png)
 * **Queues**
-  * At subnet IDs click the same subnet you chose above
+  * At **subnet IDs** click the same subnet id you chose above
   * Click **Next**
 ![](Queues.png)
-* **Storage** - click **Next**
+* **Storage**
+   * Click **Next**
 * **Create**
   * Click **Dry run** and make sure it passes that
-  * Then click **create**!
+  * Click **create**!
 ![](CreateCluster_Create.png)
 * Wait about 10-15 minutes for the cluster to go into **CREATE COMPLETE** and the compute fleet status to be running!
 
