@@ -230,7 +230,7 @@ mpicc mpi_control_least_prime_factor.c -o mpi_control_least_prime_factor
 ```
 Test application locally on head node 
 ```
-mpirun -n 4 ./mpi_control_least_prime_factor
+mpirun -n 1 ./mpi_control_least_prime_factor
 
 ```
 This should give you a runtime of the process without using parallel computing with four seperate numbers running through the function one by one. The runtime shown gives an idea of the maximum time it took to complete all four processes.
