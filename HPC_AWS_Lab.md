@@ -1,63 +1,70 @@
-# HPC: Azure-Cycle-Cloud-vs-AWS-Parallel-Cluster
+<img width="843" alt="image" src="https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/assets/97638746/37cc3072-6b20-47ea-b951-77e6f16e663a"><img width="843" alt="image" src="https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/assets/97638746/92ee0a1c-bcc5-4bb8-b765-0cb150259834"># HPC: Azure-Cycle-Cloud-vs-AWS-Parallel-Cluster
 
 ## Overview
-In this tutorial, you will go through the basics of using AWS Parallel Cluster. This tutorial will walk you through how to create and connect to a HPC cluster in AWS and a use case on how to submit an HPC job. We will be using the problem of finding the smallest prime factor as an example.
+In this tutorial, you will go through the basics of using AWS Parallel Cluster. This tutorial will walk you through how to create and connect to a HPC cluster in AWS and a use case on how to submit an HPC job. We will be using the problem of finding the smallest prime factor as an example
 
 ### Step 0: Before You Start 
-* AWS Account - Sign up for a free AWS account here : https://aws.amazon.com/free/?trk=7d839240-0f22-461a-924a-bd9f4c9f3138&sc_channel=ps&s_kwcid=AL!4422!10!71399763847723!71400284985686&ef_id=bc458f06349b10643121eb2a92f9869c:G:s&all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all
+* Sign up for a free AWS account here [AWS Account Sign Up](https://aws.amazon.com/free/?trk=7d839240-0f22-461a-924a-bd9f4c9f3138&sc_channel=ps&s_kwcid=AL!4422!10!71399763847723!71400284985686&ef_id=bc458f06349b10643121eb2a92f9869c:G:s&all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)
 
 ### Step 1: Deploy ParallelCluster UI - 20 minutes to deploy
-* Deploy the UI stack by going on this link:https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?stackName=parallelcluster-ui&templateURL=https://parallelcluster-ui-release-artifacts-us-east-1.s3.us-east-1.amazonaws.com/parallelcluster-ui.yaml
+* Create UI stack [here](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?stackName=parallelcluster-ui&templateURL=https://parallelcluster-ui-release-artifacts-us-east-1.s3.us-east-1.amazonaws.com/parallelcluster-ui.yaml)
 * Update the field AdminUserEmail with a valid email to receive a temporary password in order to connect to the ParallelCluster UI GUI
-![](parallelClusterUI_addEmail.png)
+![](parallelClusterUI-addEmail.png)
 * Leave the other default values and proceed through the next few pages till you are at stage 4
 * At stage 4 click the two tick boxes to create new IAM resources
 * Then click **Create stack **
 ![](ParallelClusterUI_Aknowledgement.png)
 * Wait about 20 minutes for it deploy!
 ### Step 2: Connect to ParallelCluster UI 
-* Go to the AWS Console, in the search box search for AWS CloudFormation and click on that service.
-    https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true
-* You’ll see a stack named parallelcluster-ui, click on that stack > Outputs Tab then click on the ParallelClusterUIURL to connect.
+* Go to the AWS Console, log in and in the search box search for AWS CloudFormation and click on that service: [link to console](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true)
+* You’ll see a stack named **parallelcluster-ui**, click on that **stack > Outputs Tab**
+* Then click on the **ParallelClusterUI URL** to connect
 ![](ParallelClusterUI-Connect.png)
-* During deployment you received an email titled [AWS ParallelCluster UI] Welcome to ParallelCluster UI, please verify your account.
-* Enter the credentials using the email you used when deploying the stack and the temporary password from the email above
-* You will be asked to provide a new password. Enter a new password to complete signup.
-
-### Step 3: Create your Cluster - 10-15 minutes to deploy
-* Save this template: https://www.hpcworkshops.com/template/cluster-config-hpc6a.yml
-* Navigate to AWS portal and type in AWS Parallel Cluster 
-* Click **Create Cluster** Button and **with a template** and then select the template above
+* You will see a prompt to enter your email and password
+![](password.png)
+    * During deployment you should have received an email titled [AWS ParallelCluster UI] "Welcome to ParallelCluster UI, please verify your account" **Copy** the password from that email.
+    * Enter the credentials using the email you used when deploying the stack and the temporary password from the email above
+    * You will be asked to provide a new password. Enter a new password to complete signup
+### Step 3: Get to the AWS ParallelCluster page - Repeat first 3 bullet points of step 2 and refer to image above
+* Go to the AWS Console, log in and in the search box search for AWS CloudFormation and click on that service: [link to console](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true)
+* You’ll see a stack named **parallelcluster-ui,** click on that **stack > Outputs Tab**
+* Then click on the **ParallelClusterUI URL** to connect
+### Step 4: Create your Cluster - 10-15 minutes to deploy
+* **Save this template**: https://www.hpcworkshops.com/template/cluster-config-hpc6a.yml
+* Click **Create Cluster** Button and **with a template** and then open the template above
 ![](CreateCluster_ClickTemplate.png)
-* Cluster properties page
-  * Add name: hpc-cluster
-  * select whichever VPC is available
-![](CreateCluster_Cluster.png)
-* Head Node page
-  * Pick the subnet id from the Availability Zone ID use2-az2
-  * Click Key pair and choose None (make sure to click None or it might not work)
+* **Cluster properties** page
+  * Add **name**: hpc-cluster
+  * Select **VPC** and click whatever is available
+  * Click **next**
+![](ClusterProperties.png)
+* **Head Node** page - screenshot slightly different than current page but same values changed
+  * Pick the **subnet id** from the Availability Zone ID **use2-az2**
+  * Click **Key pair** and choose None (make sure to click None or it might not work)
+  * Click **next**
 ![](createCluster_HeadNode.png)
-* Queues
+* **Queues**
   * At subnet IDs click the same subnet you chose above
-![](CreateCluster_Queues.png)
-* Storage - click next
-* Create
-  * Click Dry run and make sure it passes that
-  * then click create!
+  * Click **next**
+![](Queues.png)
+* **Storage** - click **next**
+* **Create**
+  * Click **Dry run** and make sure it passes that
+  * Then click **create**!
 ![](CreateCluster_Create.png)
-* Wait about 10-15 minutes for the create to complete and the compute fleet status to be running!
+* Wait about 10-15 minutes for the cluster to go into **CREATE COMPLETE** and the compute fleet status to be running!
 
 ### Step 4: Connect to the cluster using DCV
-* Once the cluster goes into CREATE COMPLETE we can connect to the head node
-* Click on DCV
+* Once the cluster goes into **CREATE COMPLETE** we can connect to the head node
+* Click on **DCV**
 ![](ConnectCluster_DCVpt1.png)
-* As a one time step since DCV uses self-signed certificates you'll need to click on Advanced> Proceed to Unsafe
+* As a one time step since DCV uses self-signed certificates you'll need to click on **Advanced> Proceed to Unsafe**
 ![](ConnectCluster_DCVpt2.png)
-* Next to Launch a terminal we'll click activities and then Terminal
+* Next to Launch a terminal we'll click **activities** and then **Terminal**
 ![](ConnectCluster_DCVpt3.png)
 ### Step 5: Submit HPC job on finding minimum prime factor
 1. Create the MPI application for smallest prime factor
-Run the commands below:
+Run the commands below in the **Terminal**:
 ```
 cat > mpi_least_prime_factor.c << EOF
 #include <stdio.h>
