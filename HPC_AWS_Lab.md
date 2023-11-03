@@ -1,4 +1,4 @@
-<img width="843" alt="image" src="https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/assets/97638746/37cc3072-6b20-47ea-b951-77e6f16e663a"><img width="843" alt="image" src="https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/assets/97638746/92ee0a1c-bcc5-4bb8-b765-0cb150259834"># HPC: Azure-Cycle-Cloud-vs-AWS-Parallel-Cluster
+# HPC: Azure-Cycle-Cloud-vs-AWS-Parallel-Cluster
 
 ## Overview
 In this tutorial, you will go through the basics of using AWS Parallel Cluster. This tutorial will walk you through how to create and connect to a HPC cluster in AWS and a use case on how to submit an HPC job. We will be using the problem of finding the smallest prime factor as an example
@@ -36,18 +36,18 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 * **Cluster properties** page
   * Add **name**: hpc-cluster
   * Select **VPC** and click whatever is available
-  * Click **next**
+  * Click **Next**
 ![](ClusterProperties.png)
-* **Head Node** page - screenshot slightly different than current page but same values changed
+* **Head Node** page - screenshot slightly different than current page but same inputs required
   * Pick the **subnet id** from the Availability Zone ID **use2-az2**
   * Click **Key pair** and choose None (make sure to click None or it might not work)
-  * Click **next**
+  * Click **Next**
 ![](createCluster_HeadNode.png)
 * **Queues**
   * At subnet IDs click the same subnet you chose above
-  * Click **next**
+  * Click **Next**
 ![](Queues.png)
-* **Storage** - click **next**
+* **Storage** - click **Next**
 * **Create**
   * Click **Dry run** and make sure it passes that
   * Then click **create**!
