@@ -67,7 +67,7 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 1. Create the MPI application for smallest prime factor
 Run the commands below in the **Terminal**:
 ```
-cat > mpi_min_prime_factor.c << EOF
+cat > mpi_least_prime_factor.c << EOF
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -150,7 +150,7 @@ This should give you a runtime of the process split up, with each of the functio
 1. Create the MPI application for smallest prime factor control
 Run the commands below:
 ```
-cat > mpi_control_min_prime_factor.c << EOF
+cat > mpi_control_least_prime_factor.c << EOF
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
