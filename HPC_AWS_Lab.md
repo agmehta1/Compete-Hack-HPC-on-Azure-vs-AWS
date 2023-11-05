@@ -242,7 +242,7 @@ mpicc mpi_parallel_least_prime_factor.c -o mpi_parallel_least_prime_factor
 
 3. Execute the application on the head node using 4 processes (specified by `-n 4`)
 ```
-mpirun -n 1 ./mpi_parallel_least_prime_factor
+mpirun -n 4 ./mpi_parallel_least_prime_factor
 ```
 
 This should print out the computed least prime factor, and give you a runtime of each of the processes as follows:
