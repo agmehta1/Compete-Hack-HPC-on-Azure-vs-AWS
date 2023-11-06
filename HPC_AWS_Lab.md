@@ -156,9 +156,9 @@ mpirun -n 1 ./mpi_control_least_prime_factor
 ```
 
 This should print out the computed least prime factor, and give you a runtime of the process as follows:
-```
+
 ![](Control_output.png)
-```
+
 
 ### Step 7: Submit HPC job on finding minimum prime factor
 1. Now, we'll do the same using MPI code designed to run in parallel across multiple concurrent processes.
@@ -247,9 +247,9 @@ mpirun -n 4 ./mpi_parallel_least_prime_factor
 
 This should print out the computed least prime factor, and give you a runtime of each of the processes as follows:
 
-```
+
 ![](output.png)
-```
+
 
 ### Step 8: Compare your two runtimes!
 * The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it.
