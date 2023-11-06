@@ -248,7 +248,7 @@ mpirun -n 4 ./mpi_parallel_least_prime_factor
 This should print out the computed least prime factor, and give you a runtime of each of the processes as follows:
 
 ```
-![](Output.png)
+![](output.png)
 ```
 
 ### Step 8: Compare your two runtimes!
