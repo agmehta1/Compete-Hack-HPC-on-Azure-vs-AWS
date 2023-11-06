@@ -252,9 +252,9 @@ This should print out the computed least prime factor, and give you a runtime of
 
 
 ### Step 8: Compare your two runtimes!
-* The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it.
+* The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it. As we can see in my above example, the control output took 553 microseconds while the code running in parallel had a maximum total run time of 136 microseconds. As we can see using parallel computing reduced the run time significantly.
 
 ### Step 9: Clean up!
-* Make sure to go back to the AWs Parallel Cluster page and hit the delete button and delete your node!
+* Make sure to go back to the AWS Parallel Cluster page and hit the delete button and delete your node!
 * The cluster and all its resources will be deleted by CloudFormation. You can check the status in the Stack Events tab.
 ![](TerminateCluster.png)
