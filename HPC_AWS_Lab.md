@@ -119,13 +119,17 @@ unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
     // Function implementation
     unsigned long long int i;
 
-    // Iterate from 2 to n/2
-    for (i = 2; i <= n/2; i++) {
+    // Iterate from 2 to n/2.
+    // This is because you only need to cover the first half
+    // For example, if a * b = c; a = (c / 2), b = 2; if a > c/2, then b < 2
+    for (i = 2; i <= (n / 2); i++) {
         // Check if i is a factor of n
         if (n % i == 0) {
             // Check if i is prime
             unsigned long long int j, is_prime = 1;
-            for (j = 2; j <= i/2; j++) {
+            // Check if i is divisible by all factors in [2, i / 2]
+            for (j = 2; j <= (i / 2); j++) {
+                // If divisible by j, then i is not prime
                 if (i % j == 0) {
                     is_prime = 0;
                     break;
@@ -178,11 +182,12 @@ unsigned long long int calcMinPrimeFactor(unsigned long long int n);
 
 int main(int argc, char* argv[]) {
     // MPI initialization
-    int process_rank;
-    unsigned long long int taskInputs[4] = {18848997157, 18848997157, 18848997157, 18848997157};
-    unsigned long long int subtaskInput;
-
     MPI_Init(&argc, &argv);
+
+    // 4 task inputs, corresponding to each of the 4 processes
+    unsigned long long int taskInputs[4] = { 18848997157, 18848997157, 18848997157, 18848997157 };
+    unsigned long long int subtaskInput;
+    int process_rank;
 
     // Store the process # of the currently executing process in process_rank
     MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
@@ -192,14 +197,14 @@ int main(int argc, char* argv[]) {
 
     // Benchamrk runtime. Start clock...
     clock_t t;
-    t = clock(); // start timer
+    t = clock();
 
     // Calculate mininmum prime factor of subtaskInput
     unsigned long long int minPrimeFactor = calcMinPrimeFactor(subtaskInput);
 
     // Stop clock, and calculate elapsed time
     t = clock() - t;
-    double  time_taken =1000000 * ((double) t) / CLOCKS_PER_SEC;
+    double time_taken = 1000000 * ((double) t) / CLOCKS_PER_SEC;
 
     // Print out elapsed time and results
     printf("Process %d: Time taken: %.2f micro-seconds\n", process_rank, time_taken);// calculate the elapsed time
@@ -213,16 +218,19 @@ int main(int argc, char* argv[]) {
 
 unsigned long long int calcMinPrimeFactor(unsigned long long int n) {
   // Function implementation
-  // You can use MPI features in your function if needed
   unsigned long long int i;
 
-  // Iterate from 2 to n/2
-  for (i = 2; i <= n/2; i++) {
+  // Iterate from 2 to n/2.
+  // This is because you only need to cover the first half
+  // For example, if a * b = c; a = (c / 2), b = 2; if a > c/2, then b < 2
+  for (i = 2; i <= (n / 2); i++) {
       // Check if i is a factor of n
       if (n % i == 0) {
           // Check if i is prime
           unsigned long long int j, is_prime = 1;
-          for (j = 2; j <= i/2; j++) {
+          // Check if i is divisible by all factors in [2, i / 2]
+          for (j = 2; j <= (i / 2); j++) {
+              // If divisible by j, then i is not prime
               if (i % j == 0) {
                   is_prime = 0;
                   break;
