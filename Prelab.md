@@ -1,4 +1,4 @@
-d# HPC: Azure-Cycle-Cloud-vs-AWS-Parallel-Cluster
+# HPC: Pre-Lab-Azure-Cycle-Cloud-vs-AWS-Parallel-Cluster
 
 ## Overview
 In this tutorial, you will go through the basics of using AWS Parallel Cluster. This tutorial will walk you through how to create and connect to a HPC cluster in AWS and a use case on how to submit an HPC job. We will be using the problem of finding the smallest prime factor as an example
