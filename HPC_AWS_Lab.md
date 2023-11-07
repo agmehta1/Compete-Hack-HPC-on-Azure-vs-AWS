@@ -183,6 +183,8 @@ int main(int argc, char* argv[]) {
     unsigned long long int subtaskInput;
 
     MPI_Init(&argc, &argv);
+
+    // Store the process # of the currently executing process in process_rank
     MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
 
     // Instruction to scatter inputs from taskInputs, and store the current process' assigned problem in subtaskInput 
