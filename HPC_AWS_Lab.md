@@ -29,6 +29,9 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 * Go to the AWS Console, log in and in the search box search for AWS CloudFormation and click on that service: [link to console](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true)
 * You’ll see a stack named **parallelcluster-ui,** click on that **stack > Outputs Tab**
 * Then click on the **ParallelClusterUI URL** to connect
+![](ParallelClusterUI-Connect.png)
+*If asked for password enter the email and new password used above!
+![](password.png)
 ### Step 4: Create your Cluster - 10-15 minutes to deploy
 * **Save this template**: https://www.hpcworkshops.com/template/cluster-config-hpc6a.yml
 * Click **Create Cluster** Button and **with a template** and then open the template above
