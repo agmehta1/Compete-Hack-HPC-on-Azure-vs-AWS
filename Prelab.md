@@ -15,3 +15,9 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 * Then click **Create stack **
 ![](ParallelClusterUI_Aknowledgement.png)
 * Wait about 20 minutes for it deploy!
+### Step 3: Get to the AWS ParallelCluster page - Repeat first 3 bullet points of step 2
+* Go to the AWS Console, log in and in the search box search for AWS CloudFormation and click on that service: [link to console](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true)
+* You’ll see a stack named **parallelcluster-ui,** click on that **stack > Outputs Tab**
+* Then click on the **ParallelClusterUI URL** to connect
+![](ParallelClusterUI-Connect.png)
+* If asked for password enter the email and new password you created in step 2
