@@ -79,33 +79,31 @@ cat > mpi_control_least_prime_factor.c << EOF
 #include <unistd.h>
 #include <time.h>
 
-// Function declarations
+// Function declaration
 unsigned long long int calcMinPrimeFactor(unsigned long long int n);
 
 int main(int argc, char* argv[]) {
-    // MPI initialization
-    int process_rank,size_of_comm;
-
+    // Initialize MPI execution environment
     MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &size_of_comm);
-    MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
 
     unsigned long long int taskInputs[] = { 18848997157, 18848997157, 18848997157, 18848997157 };
     unsigned long long int taskOutputs[4];
-    int i;
-
-    // Benchamrk runtime
+    
+    // Benchamrk runtime. Start clock...
     clock_t t;
     t = clock();
 
+    // Re-calculate the minimum prime factor 4 times
+    int i;
     for (i = 0; i < 4; i++) {
         taskOutputs[i] = calcMinPrimeFactor(taskInputs[i]);
     }
 
+    // Stop clock, and calculate elapsed time
     t = clock() - t;
-    double time_taken = 1000000 * ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
+    double time_taken = 1000000 * ((double) t) / CLOCKS_PER_SEC; 
 
-    // Print output and runtime
+    // Print out elapsed time and results
     for (i = 0; i < 4; i++) {
         printf("Minimum prime factor of %d is %d\n", taskInputs[i], taskOutputs[i]);
     }
@@ -180,23 +178,28 @@ unsigned long long int calcMinPrimeFactor(unsigned long long int n);
 
 int main(int argc, char* argv[]) {
     // MPI initialization
-   
-    int process_rank, size_of_comm;
+    int process_rank;
     unsigned long long int taskInputs[4] = {18848997157, 18848997157, 18848997157, 18848997157};
     unsigned long long int subtaskInput;
 
     MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &size_of_comm);
     MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
 
+    // Instruction to scatter inputs from taskInputs, and store the current process' assigned problem in subtaskInput 
     MPI_Scatter(&taskInputs, 1, MPI_UNSIGNED_LONG_LONG, &subtaskInput, 1, MPI_UNSIGNED_LONG_LONG, 0, MPI_COMM_WORLD);
 
-    // Call your functions within the MPI program
+    // Benchamrk runtime. Start clock...
     clock_t t;
     t = clock(); // start timer
+
+    // Calculate mininmum prime factor of subtaskInput
     unsigned long long int minPrimeFactor = calcMinPrimeFactor(subtaskInput);
+
+    // Stop clock, and calculate elapsed time
     t = clock() - t;
-    double  time_taken =1000000 * ((double) t) / CLOCKS_PER_SEC; // calculate the elapsed time
+    double  time_taken =1000000 * ((double) t) / CLOCKS_PER_SEC;
+
+    // Print out elapsed time and results
     printf("Process %d: Time taken: %.2f micro-seconds\n", process_rank, time_taken);// calculate the elapsed time
     printf("Process %d: Minimum prime factor of %d is %d\n", process_rank, subtaskInput, minPrimeFactor);
 
