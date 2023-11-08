@@ -25,6 +25,33 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
     * During deployment you should have received an email titled [AWS ParallelCluster UI] "Welcome to ParallelCluster UI, please verify your account" **Copy** the password from that email.
     * Enter the credentials using the email you used when deploying the stack and the temporary password from the email above
     * You will be asked to provide a new password. Enter a new password to complete signup
+### Step 3: Create a new AWS EC2 key-pair for our lab
+Next, we will create a new AWS EC2 key-pair so that we can eventually authenticate and connect to the cluster we are going to provision.
+
+* Go to the AWS Console, and click on the button for CloudShell at the navbar at the top (or use this [link](https://us-east-2.console.aws.amazon.com/cloudshell/home?region=us-east-2#c4d15cb1-470b-4812-8893-cbb532feceba))
+![Screenshot 2023-11-07 at 7 49 19 PM](https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/assets/97638746/4c754af1-e2dd-4967-975a-bde8b778d6a2)
+
+* Run the following in CloudShell to create a new EC2 key-pair `pcluster-demo-key`, and set the permissions correctly
+```
+aws ec2 create-key-pair --key-name pcluster-demo-key --query KeyMaterial --output text > pcluster-demo-key.pem
+chmod 400 pcluster-demo-key
+```
+* Running `aws ec2 describe-key-pairs` should verify your key was created, and output something similar to:
+```
+{
+    "KeyPairs": [
+        {
+            "KeyPairId": "key-0db2dfab426dc844a",
+            "KeyFingerprint": "<redacted>",
+            "KeyName": "pcluster-demo-key",
+            "KeyType": "rsa",
+            "Tags": [],
+            "CreateTime": "2023-11-08T03:56:25.853000+00:00"
+        }
+    ]
+}
+```
+
 ### Step 3: Get to the AWS ParallelCluster page - Repeat first 3 bullet points of step 2
 * Go to the AWS Console, log in and in the search box search for AWS CloudFormation and click on that service: [link to console](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true)
 * You’ll see a stack named **parallelcluster-ui,** click on that **stack > Outputs Tab**
@@ -42,7 +69,6 @@ In this tutorial, you will go through the basics of using AWS Parallel Cluster. 
 ![](ClusterProperties.png)
 * **Head Node** page - screenshot slightly different than current page but same inputs required
   * Pick the **subnet id** from the Availability Zone ID **use2-az2**
-  * Click **Key pair** and choose None (make sure to click None or it might not work)
   * Click **Next**
 ![](createCluster_HeadNode.png)
 * **Queues**
