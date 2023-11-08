@@ -34,7 +34,7 @@ Next, we will create a new AWS EC2 key-pair so that we can eventually authentica
 * Run the following in CloudShell to create a new EC2 key-pair `pcluster-demo-key`, and set the permissions correctly
 ```
 aws ec2 create-key-pair --key-name pcluster-demo-key --query KeyMaterial --output text > pcluster-demo-key.pem
-chmod 400 pcluster-demo-key
+chmod 400 pcluster-demo-key.pem
 ```
 * Running `aws ec2 describe-key-pairs` should verify your key was created, and output something similar to:
 ```
