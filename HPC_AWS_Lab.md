@@ -59,7 +59,7 @@ chmod 400 pcluster-demo-key
 ![](ParallelClusterUI-Connect.png)
 * If asked for password enter the email and new password you created in step 2
 ### Step 4: Create your Cluster - 10-15 minutes to deploy
-* **Save this template**: https://www.hpcworkshops.com/template/cluster-config-hpc6a.yml
+* **Save this template**: [Cluster Configuration Template](https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/blob/main/Aws_template.yml)
 * Click **Create Cluster** Button and **with a template** and then open the template above
 ![](CreateCluster_ClickTemplate.png)
 * **Cluster properties** page
