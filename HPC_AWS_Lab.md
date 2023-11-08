@@ -52,7 +52,7 @@ chmod 400 pcluster-demo-key
 }
 ```
 
-### Step 3: Get to the AWS ParallelCluster page - Repeat first 3 bullet points of step 2
+### Step 4: Get to the AWS ParallelCluster page - Repeat first 3 bullet points of step 2
 * Go to the AWS Console, log in and in the search box search for AWS CloudFormation and click on that service: [link to console](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks?filteringText=&filteringStatus=active&viewNested=true)
 * You’ll see a stack named **parallelcluster-ui,** click on that **stack > Outputs Tab**
 * Then click on the **ParallelClusterUI URL** to connect
@@ -69,6 +69,7 @@ chmod 400 pcluster-demo-key
 ![](ClusterProperties.png)
 * **Head Node** page - screenshot slightly different than current page but same inputs required
   * Pick the **subnet id** from the Availability Zone ID **use2-az2**
+  * If available, select the **Key pair** we just created `pcluster-demo-key` from the dropdown options (OK if it's not in the list) 
   * Click **Next**
 ![](createCluster_HeadNode.png)
 * **Queues**
@@ -76,23 +77,83 @@ chmod 400 pcluster-demo-key
   * Click **Next**
 ![](Queues.png)
 * **Storage**
-   * Click **Next**
+  * Click **Next**
 * **Create**
+  * Ensure or edit so that the `KeyName` in the shown configuration matches the name of the key-pair we created in Step 3
+    ```
+      Ssh:
+    KeyName: pcluster-demo-key
+    ```
   * Click **Dry run** and make sure it passes that
   * Click **create**!
 ![](CreateCluster_Create.png)
 * Wait about 10-15 minutes for the cluster to go into **CREATE COMPLETE** and the compute fleet status to be running!
 
-### Step 5: Connect to the cluster using DCV
-* Once the cluster goes into **CREATE COMPLETE** we can connect to the head node
-* Click on **DCV**
-![](ConnectCluster_DCVpt1.png)
-* As a one time step since DCV uses self-signed certificates you'll need to click on **Advanced> Proceed to Unsafe**
+### Step 5: Set up AWS ParallelCluster CLI (command line interface)
+* Go to CloudShell in the AWS console navbar at the top as we did in Step 3, or use this [link](https://us-east-2.console.aws.amazon.com/cloudshell/home?region=us-east-2#c4d15cb1-470b-4812-8893-cbb532feceba))
+* CloudShell should have python3 installed. Run the following to upgrade/install `pip`, which is then used to install our ParallelCluster CLI
+```
+python3 -m pip install --upgrade pip
+```
+* Run the following to install the ParallelCluster CLI
+```
+python3 -m pip install "aws-parallelcluster" --upgrade --user
+```
+* Check it was installed by running `pcluster version`, which should return something like:
+```
+{
+  "version": "3.7.0"
+}
+```
+* Then, run `pcluster list-clusters` to get the status of the cluster we just provisioned:
+```
+{
+  "clusters": [
+    {
+      "clusterName": "hpc-cluster",
+      "cloudformationStackStatus": "CREATE_COMPLETE",
+      "cloudformationStackArn": "arn:aws:cloudformation:us-east-2:483406226049:stack/hpc-cluster/9c712710-7de8-11ee-a446-0a300d84bf5f",
+      "region": "us-east-2",
+      "version": "3.7.2",
+      "clusterStatus": "CREATE_COMPLETE",
+      "scheduler": {
+        "type": "slurm"
+      }
+    }
+  ]
+}
+```
+
+### Step 6: Connect to the cluster using DCV
+* Once our cluster goes into **CREATE COMPLETE** (can be checked in the ParallelCluster UI console, or by running `pcluster list-clusters` as in Step 5), we can connect to the head node
+
+_NOTE: This next step should be done quickly so the created DCV session does not close_
+* Continuing in CloudShell, run the following, substituting where appropriate
+```
+pcluster dcv-connect -n <clusterName> -r <region> --key-path <path_to_generated_PEM_file_from_Step 3>
+```
+Example:
+```
+pcluster dcv-connect -n hpc-cluster -r us-east-2 --key-path ./pcluster-demo-key.pem
+```
+
+You should see output similar to:
+```
+...
+Unable to open the Web browser.
+Please use the following one-time URL in your browser within 30 seconds:
+https://3.143.224.87:8443?authToken=kgBhbAVdZQIiulCmdtSoPGR99mreAYSGTbUCv_vgP2_c9cDbuqJRU7pViMxT7Abbka9tVeMIcXy1E-izJBpMcaKjOqvT2D6j2rLQ2_8NgE5mGkTXGwvvAFb4y4OdElVzLhLq1uPIB68EVDCIaUimZ-KmtIhUUGQhx7Ei6vQsvjGguqP_tOgGmNgdyM756hFOmOWl0dOj3TmRoaNPO8fmfm5M3vev7DxmqSbcwzrQC8WxUYAb7KX_nf5N_JS4N6ep#wUjc1fquAlHwCKt6Qw2o
+```
+This is *good*! Follow the instructions, and copy-paste the provided URL into a new tab in your web browser.
+
+* As a one time step since the DCV viewer site uses third-party certificates you may need to click on a variation of **Advanced> Proceed to Unsafe**
 ![](ConnectCluster_DCVpt2.png)
-* Next to Launch a terminal we'll click **activities** and then **Terminal**
+* Next to Launch a terminal we'll click **Activities** and then **Terminal**
 ![](ConnectCluster_DCVpt3.png)
 
-### Step 6: Submit HPC job using control code for smallest prime factor
+_NOTE: if you're not seeing **Activities** at any point, you may need to click around in the DCV_
+
+### Step 7: Submit HPC job using control code for smallest prime factor
 1. To demonstrate ParallelCluster's HPC capabilities, we will first write a program to calculate the smallest prime factor of a large integer.
 It will run the function `calcMinPrimeFactor` on the same input 4 times within a single ParellelCluster process.
 
