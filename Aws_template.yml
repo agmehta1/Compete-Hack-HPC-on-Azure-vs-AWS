@@ -1,7 +1,7 @@
 HeadNode:
   InstanceType: c5a.2xlarge
   Ssh:
-    KeyName: your-key
+    KeyName: pcluster-demo-key
   Networking:
     SubnetId: subnet-1234567
   LocalStorage:
