@@ -81,11 +81,11 @@ chmod 400 pcluster-demo-key
 * **Create**
   * Ensure or edit so that the `KeyName` in the shown configuration matches the name of the key-pair we created in Step 3
     ```
-      Ssh:
-    KeyName: pcluster-demo-key
+    Ssh:
+       KeyName: pcluster-demo-key
     ```
   * Click **Dry run** and make sure it passes that
-  * Click **create**!
+  * Click **Create**!
 ![](CreateCluster_Create.png)
 * Wait about 10-15 minutes for the cluster to go into **CREATE COMPLETE** and the compute fleet status to be running!
 
