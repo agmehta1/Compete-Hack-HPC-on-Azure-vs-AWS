@@ -31,10 +31,10 @@ Next, we will create a new AWS EC2 key-pair so that we can eventually authentica
 * Go to the AWS Console, and click on the button for CloudShell at the navbar at the top (or use this [link](https://us-east-2.console.aws.amazon.com/cloudshell/home?region=us-east-2#c4d15cb1-470b-4812-8893-cbb532feceba))
 ![Screenshot 2023-11-07 at 7 49 19 PM](https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/assets/97638746/4c754af1-e2dd-4967-975a-bde8b778d6a2)
 
-* Run the following in CloudShell to create a new EC2 key-pair `pcluster-demo-key`, and set the permissions correctly
+* Run the following in CloudShell to create a new EC2 key-pair `your-key`, and set the permissions correctly
 ```
-aws ec2 create-key-pair --key-name pcluster-demo-key --query KeyMaterial --output text > pcluster-demo-key.pem
-chmod 400 pcluster-demo-key.pem
+aws ec2 create-key-pair --key-name your-key --query KeyMaterial --output text > your-key.pem
+chmod 400 your-key.pem
 ```
 * Running `aws ec2 describe-key-pairs` should verify your key was created, and output something similar to:
 ```
@@ -43,7 +43,7 @@ chmod 400 pcluster-demo-key.pem
         {
             "KeyPairId": "key-0db2dfab426dc844a",
             "KeyFingerprint": "<redacted>",
-            "KeyName": "pcluster-demo-key",
+            "KeyName": "your-key",
             "KeyType": "rsa",
             "Tags": [],
             "CreateTime": "2023-11-08T03:56:25.853000+00:00"
@@ -69,7 +69,7 @@ chmod 400 pcluster-demo-key.pem
 ![](ClusterProperties.png)
 * **Head Node** page - screenshot slightly different than current page but same inputs required
   * Pick the **subnet id** from the Availability Zone ID **use2-az2**
-  * If available, select the **Key pair** we just created `pcluster-demo-key` from the dropdown options (OK if it's not in the list) 
+  * If available, select the **Key pair** we just created `your-key` from the dropdown options (OK if it's not in the list) 
   * Click **Next**
 ![](createCluster_HeadNode.png)
 * **Queues**
@@ -82,7 +82,7 @@ chmod 400 pcluster-demo-key.pem
   * Ensure or edit so that the `KeyName` in the shown configuration matches the name of the key-pair we created in Step 3
     ```
     Ssh:
-       KeyName: pcluster-demo-key
+       KeyName: your-key
     ```
   * Click **Dry run** and make sure it passes that
   * Click **Create**!
@@ -134,7 +134,7 @@ pcluster dcv-connect -n <clusterName> -r <region> --key-path <path_to_generated_
 ```
 Example:
 ```
-pcluster dcv-connect -n hpc-cluster -r us-east-2 --key-path ./pcluster-demo-key.pem
+pcluster dcv-connect -n hpc-cluster -r us-east-2 --key-path ./your-key.pem
 ```
 
 You should see output similar to:
