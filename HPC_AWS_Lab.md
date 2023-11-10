@@ -230,7 +230,7 @@ mpirun -n 1 ./mpi_control_least_prime_factor
 
 This should print out the computed least prime factor, and give you a runtime of the process as follows:
 
-![](Control_output.png)
+![](Control_output1.png)
 
 
 ### Step 9: Submit HPC job on finding minimum prime factor
@@ -332,7 +332,7 @@ mpirun -n 4 ./mpi_parallel_least_prime_factor
 This should print out the computed least prime factor, and give you a runtime of each of the processes as follows:
 
 
-![](output.png)
+![](output2.png)
 
 
 ### Step 10: Compare your two runtimes!
