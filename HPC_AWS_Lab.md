@@ -105,24 +105,6 @@ python3 -m pip install "aws-parallelcluster" --upgrade --user
   "version": "3.7.0"
 }
 ```
-* Then, run `pcluster list-clusters` to get the status of the cluster we just provisioned:
-```
-{
-  "clusters": [
-    {
-      "clusterName": "hpc-cluster",
-      "cloudformationStackStatus": "CREATE_COMPLETE",
-      "cloudformationStackArn": "arn:aws:cloudformation:us-east-2:483406226049:stack/hpc-cluster/9c712710-7de8-11ee-a446-0a300d84bf5f",
-      "region": "us-east-2",
-      "version": "3.7.2",
-      "clusterStatus": "CREATE_COMPLETE",
-      "scheduler": {
-        "type": "slurm"
-      }
-    }
-  ]
-}
-```
 
 ### Step 7: Connect to the cluster using DCV
 * Once our cluster goes into **CREATE COMPLETE** (can be checked in the ParallelCluster UI console, or by running `pcluster list-clusters` as in Step 5), we can connect to the head node
