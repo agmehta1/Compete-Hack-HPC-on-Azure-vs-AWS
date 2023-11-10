@@ -174,7 +174,7 @@ int main(int argc, char* argv[]) {
 
     // Print out elapsed time and results
     for (i = 0; i < 4; i++) {
-        printf("Minimum prime factor of %d is %d\n", taskInputs[i], taskOutputs[i]);
+        printf("Minimum prime factor of %llu is %llu\n", taskInputs[i], taskOutputs[i]);
     }
     printf("Time taken: %.2f micro-seconds\n", time_taken);// calculate the elapsed time
 
@@ -277,7 +277,7 @@ int main(int argc, char* argv[]) {
 
     // Print out elapsed time and results
     printf("Process %d: Time taken: %.2f micro-seconds\n", process_rank, time_taken);// calculate the elapsed time
-    printf("Process %d: Minimum prime factor of %d is %d\n", process_rank, subtaskInput, minPrimeFactor);
+    printf("Process %d: Minimum prime factor of %llu is %llu\n\n", process_rank, subtaskInput, minPrimeFactor);
 
     // MPI finalization
     MPI_Finalize();
