@@ -58,7 +58,7 @@ chmod 400 your-key.pem
 * Then click on the **ParallelClusterUI URL** to connect
 ![](ParallelClusterUI-Connect.png)
 * If asked for password enter the email and new password you created in step 2
-### Step 4: Create your Cluster - 10-15 minutes to deploy
+### Step 5: Create your Cluster - 10-15 minutes to deploy
 * **Save this template**: [Cluster Configuration Template](https://github.com/agmehta1/Compete-Hack-HPC-on-Azure-vs-AWS/blob/main/Aws_template.yml)
 * Click **Create Cluster** Button and **with a template** and then open the template above
 ![](CreateCluster_ClickTemplate.png)
@@ -89,7 +89,7 @@ chmod 400 your-key.pem
 ![](CreateCluster_Create.png)
 * Wait about 10-15 minutes for the cluster to go into **CREATE COMPLETE** and the compute fleet status to be running!
 
-### Step 5: Set up AWS ParallelCluster CLI (command line interface)
+### Step 6: Set up AWS ParallelCluster CLI (command line interface)
 * Go to CloudShell in the AWS console navbar at the top as we did in Step 3, or use this [link](https://us-east-2.console.aws.amazon.com/cloudshell/home?region=us-east-2#c4d15cb1-470b-4812-8893-cbb532feceba))
 * CloudShell should have python3 installed. Run the following to upgrade/install `pip`, which is then used to install our ParallelCluster CLI
 ```
@@ -124,7 +124,7 @@ python3 -m pip install "aws-parallelcluster" --upgrade --user
 }
 ```
 
-### Step 6: Connect to the cluster using DCV
+### Step 7: Connect to the cluster using DCV
 * Once our cluster goes into **CREATE COMPLETE** (can be checked in the ParallelCluster UI console, or by running `pcluster list-clusters` as in Step 5), we can connect to the head node
 
 _NOTE: This next step should be done quickly so the created DCV session does not close_
@@ -153,7 +153,7 @@ This is *good*! Follow the instructions, and copy-paste the provided URL into a 
 
 _NOTE: if you're not seeing **Activities** at any point, you may need to click around in the DCV_
 
-### Step 7: Submit HPC job using control code for smallest prime factor
+### Step 8: Submit HPC job using control code for smallest prime factor
 1. To demonstrate ParallelCluster's HPC capabilities, we will first write a program to calculate the smallest prime factor of a large integer.
 It will run the function `calcMinPrimeFactor` on the same input 4 times within a single ParellelCluster process.
 
@@ -251,7 +251,7 @@ This should print out the computed least prime factor, and give you a runtime of
 ![](Control_output.png)
 
 
-### Step 7: Submit HPC job on finding minimum prime factor
+### Step 9: Submit HPC job on finding minimum prime factor
 1. Now, we'll do the same using MPI code designed to run in parallel across multiple concurrent processes.
 It will run the function `calcMinPrimeFactor` on the 4 inputs scattered across 4 concurrent parallel processes.
 
@@ -353,10 +353,10 @@ This should print out the computed least prime factor, and give you a runtime of
 ![](output.png)
 
 
-### Step 8: Compare your two runtimes!
+### Step 10: Compare your two runtimes!
 * The runtime to find the smallest prime factor for four numbers using parallel computing should take signifcantly shorter amount of time than the runtime to find the same problem without it. As we can see in my above example, the control output took 553 microseconds while the code running in parallel had a maximum total run time of 136 microseconds. As we can see using parallel computing reduced the run time significantly.
 
-### Step 9: Clean up!
+### Step 11: Clean up!
 * Make sure to go back to the AWS Parallel Cluster page and hit the delete button and delete your node!
 * The cluster and all its resources will be deleted by CloudFormation. You can check the status in the Stack Events tab.
 ![](TerminateCluster.png)
